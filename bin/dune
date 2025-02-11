@@ -1,0 +1,4 @@
+(executable
+ (public_name dpll_sat_solver)
+ (name main)
+ (libraries sat))
