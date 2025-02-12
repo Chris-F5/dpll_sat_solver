@@ -16,6 +16,11 @@ variables where proposition P(i,j,n) is true iff the cell with coordinates (i,j)
 holds the number n in the solution. Here i,j,n are elements of {1..9}. Then we
 ask DPLL to find a solution.
 
+Running
+-------
+
+`dune exec dpll_sodoku`
+
 
 . 8 . | . 7 . | . 3 .
 2 6 . | . 5 . | . 1 8
