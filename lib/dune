@@ -1,2 +1,2 @@
 (library
- (name sat))
+ (name dpll_sat_solver))
