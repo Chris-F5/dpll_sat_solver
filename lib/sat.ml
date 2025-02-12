@@ -1,4 +1,6 @@
 type 'a prop_expr =
+  | True
+  | False
   | Variable of 'a
   | Complement of 'a prop_expr
   | Conjunction of 'a prop_expr * 'a prop_expr
@@ -25,6 +27,8 @@ let literal_as_interp = function
   | Negative a -> (a, false)
 
 let rec string_of_prop_expr f = function
+  | True -> "t"
+  | False -> "f"
   | Variable a -> f a
   | Complement e -> "!" ^ (string_of_prop_expr f e)
   | Conjunction (e1,e2) -> "(" ^ (string_of_prop_expr f e1) ^ "*" ^ (string_of_prop_expr f e2) ^ ")"
@@ -38,8 +42,22 @@ let string_of_interp f interp = String.concat "," (
     List.map (function | v,true -> (f v) ^ "=t" | v,false -> (f v) ^ "=f" ) interp
   )
 
+let rec conjunction = function
+  | t::[] -> t
+  | t::ts -> Conjunction (t, (conjunction ts))
+  | [] -> True
+
+let rec disjunction = function
+  | t::[] -> t
+  | t::ts -> Disjunction (t, (disjunction ts))
+  | [] -> False
+
 let rec prop_to_cnf = function
+  | True -> [ ]
+  | False -> [ [ ] ]
   | Variable a -> [ [ Positive a ] ]
+  | Complement (True) -> prop_to_cnf False
+  | Complement (False) -> prop_to_cnf True
   | Complement (Variable a) -> [ [ Negative a ] ]
   | Complement (Complement e) -> prop_to_cnf e
   | Complement (Conjunction (e1, e2)) -> prop_to_cnf (Disjunction (Complement (e1), Complement(e2)))
@@ -69,7 +87,7 @@ let uniq xs = List.fold_right uniq_cons xs []
 let del_pure_literals cnf interp =
     let literals = uniq (List.concat cnf) in
     let pure_literals = List.filter (fun l -> not (List.mem (complement l) literals)) literals in
-    (List.map (List.filter (fun l -> not (List.mem l pure_literals))) cnf,
+    (List.fold_right propigate_unit_clause pure_literals cnf,
      (List.map literal_as_interp pure_literals) @ interp)
 
 let rec dpll_sat cnf interp =
