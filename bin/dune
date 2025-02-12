@@ -1,4 +1,4 @@
 (executable
- (public_name dpll_sat_solver)
+ (public_name dpll_sodoku)
  (name main)
- (libraries dpll_sat_solver))
+ (libraries dpll_sodoku))

@@ -1,2 +1,2 @@
 (library
- (name dpll_sat_solver))
+ (name dpll_sodoku))

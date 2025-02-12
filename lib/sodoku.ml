@@ -1,4 +1,4 @@
-open Sat
+open Dpll
 
 type sodoku_puzzel = int list list
 type sodoku_predicate = int * int * int

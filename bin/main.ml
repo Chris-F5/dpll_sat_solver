@@ -1,5 +1,5 @@
-open Dpll_sat_solver.Sat
-open Dpll_sat_solver.Sodoku
+open Dpll_sodoku.Dpll
+open Dpll_sodoku.Sodoku
 
 let sod = load_sodoku "080070030260050018000000400000602000390010086000709000004000800810040052050090070"
 let prop = sodoku_to_prop_expr sod
