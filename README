@@ -1,0 +1,47 @@
+DPLL Sodoku Solver
+------------------
+
+I wrote then to help me internalise concepts I'm learning in a course on logic
+and proof (Cambridge IB 2425) and to help me learn OCaml.
+
+Davis-Putnam-Logeman-Loveland DPLL is a propositional logic algorithm to find
+an interpretation that satisfies an expression. For example, you might ask it to
+find an interpretation for
+  (X OR Y) AND (NOT (X AND Y))
+and it might tell you that
+  {X=true, Y=false} entails (X OR Y) AND (NOT (X AND Y)).
+
+We express a sodoku problem as a propositional logic statement of 9*9*9=729
+variables where proposition P(i,j,n) is true iff the cell with coordinates (i,j)
+holds the number n in the solution. Here i,j,n are elements of {1..9}. Then we
+ask DPLL to find a solution.
+
+
+. 8 . | . 7 . | . 3 .
+2 6 . | . 5 . | . 1 8
+. . . | . . . | 4 . .
+------+-------+------
+. . . | 6 . 2 | . . .
+3 9 . | . 1 . | . 8 6
+. . . | 7 . 9 | . . .
+------+-------+------
+. . 4 | . . . | 8 . .
+8 1 . | . 4 . | . 5 2
+. 5 . | . 9 . | . 7 .
+
+          |
+          |
+         \ /
+
+1 8 9 | 2 7 5 | 6 3 4
+2 6 3 | 4 5 7 | 9 1 8
+5 2 1 | 3 6 8 | 4 9 7
+------+-------+------
+7 3 5 | 6 8 2 | 1 4 9
+3 9 2 | 5 1 4 | 7 8 6
+6 4 8 | 7 3 9 | 5 2 1
+------+-------+------
+9 7 4 | 1 2 3 | 8 6 5
+8 1 7 | 9 4 6 | 3 5 2
+4 5 6 | 8 9 1 | 2 7 3
+
