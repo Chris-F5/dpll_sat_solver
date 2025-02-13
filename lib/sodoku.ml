@@ -17,6 +17,9 @@ let load_sodoku str =
       let row,rest = take x ls in assert (List.length row == x); row::(reshape x (y-1) rest) in
   reshape 9 9 ints
 
+let export_sodoku sod =
+  String.concat "" (List.map (fun row -> String.concat "" (List.map (fun c -> string_of_int c) row) ) sod)
+
 let rec string_of_sodoku sod =
   let string_of_cell c = if c <> 0 then string_of_int c else "." in
   let rec string_of_row = function
@@ -50,7 +53,10 @@ let sodoku_to_prop_expr sod =
       conjunction (
         (cross1 (fun i' -> if i' == i then True else Complement (Variable (i',j,n)))) @
         (cross1 (fun j' -> if j' == j then True else Complement (Variable (i,j',n)))) @
-        (cross1 (fun n' -> if n' == n then True else Complement (Variable (i,j,n'))))
+        (cross1 (fun n' -> if n' == n then True else Complement (Variable (i,j,n')))) @
+        (nns
+          |> List.filter (fun (i',j') -> (i'-1)/3==(i-1)/3 && (j'-1)/3==(j-1)/3 && (i'<>i || j'<>j) )
+          |> List.map (fun (i',j') -> Complement (Variable(i',j',n))) )
       )
     ))) in
   let complete_term = conjunction ( cross2 (fun (i,j) -> disjunction (

@@ -96,11 +96,11 @@ let rec dpll_sat cnf interp =
   let cnf, interp = del_pure_literals cnf interp in
   if List.mem [] cnf then None else
   match cnf with
-    | (l::ls)::cs ->
+    | (l::_)::_ ->
       let v = match l with | Positive v -> v | Negative v -> v in
-      ( match dpll_sat (propigate_unit_clause (Positive v) (ls::cs)) ((v,true)::interp) with
+      ( match dpll_sat (propigate_unit_clause (Positive v) cnf) ((v,true)::interp) with
         | Some (interp) -> Some (interp)
-        | None -> dpll_sat (propigate_unit_clause (Negative v) (ls::cs)) ((v,false)::interp) )
+        | None -> dpll_sat (propigate_unit_clause (Negative v) cnf) ((v,false)::interp) )
     | [[]] -> assert false
     | []::_ -> assert false
     | [] -> Some (interp)
