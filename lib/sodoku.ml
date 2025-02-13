@@ -1,6 +1,6 @@
 open Dpll
 
-type sodoku_puzzel = int list list
+type sodoku_puzzle = int list list
 type sodoku_predicate = int * int * int
 
 let rec take n l = match n,l with
